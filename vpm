@@ -510,7 +510,7 @@ case "$cmd" in
     wrapcommand xbps-install -Suv
   ;;
 
-  search|s)
+  search|s|se)
     msg -n "Searching for: $* "
     wrapcommand xbps-query -v -Rs "$@"
   ;;
