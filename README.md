@@ -21,7 +21,7 @@ vpm is released under the terms of the GNU General Public License,
 Version 3. See the LICENSE file for further information.
 
 # About (What is vpm?)
-vpm is a simple to use, daily-driver enhancement to the awesome XBPS (X Binary Package System), initially designed as a helper tool for use with VoidLinux. Feel free to think "Void Package Management" or something if it helps you remember its name, but please note that it's NOT a "package manager" in the nitpickers understanding of the word - especially vpm shouldn't be confused with XBPS - vpm is just an addon helper tool for XBPS to make your life easier. That's it. 
+vpm is a simple to use, daily-driver enhancement to the awesome XBPS (X Binary Package System), initially designed as a helper tool for use with VoidLinux. Feel free to think "Void Package Management" or something if it helps you remember its name, but please note that it's NOT a "package manager" in the nitpickers understanding of the word - especially vpm shouldn't be confused with XBPS - vpm is just an addon helper tool for XBPS to make your life easier. That's it.
 
 # Screenshots
 
@@ -46,10 +46,12 @@ vpm requires BASH, the Bourne Again SHell, which should be installed by default 
 Installing vpm should be as easy as following the simple following steps:
 
 1. Install git via xbps-install
-	$ xbps-install -S git
+
+        $ xbps-install -S git
 
 2. Clone vpm repository
-	$ git clone git@github.com:netzverweigerer/vpm.git
+
+        $ git clone git@github.com:netzverweigerer/vpm.git
 
 I'm not covering how to put vpm into a place that is in your $PATH as I can't give general UNIX administration support in this README.
 
