@@ -151,11 +151,7 @@ version () {
 rootcheck () {
   if [[ $EUID -gt 0 ]]; then
     msg "$progname: This operation needs super-user privileges."
-    read -p "Elevate (Y/n)? " yn
-    case "$yn" in
-      n*|N*) exit 255 ;;
-      *) SUDO=sudo ;;
-    esac
+    SUDO=sudo
   else
     SUDO=''
   fi
