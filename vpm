@@ -511,10 +511,7 @@ case "$cmd" in
     msg -n 'Running system update '
     wrapcommand $SUDO xbps-install -Suv
     if [[ $ret == 16 ]]; then
-     msg "Updating xbps (xbps-install -u xbps)"
      $SUDO xbps-install -u xbps
-     msg -n 'Run system update again '
-     exit 0
     fi
     
   ;;
