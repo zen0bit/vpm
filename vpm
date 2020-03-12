@@ -157,8 +157,10 @@ version () {
 # check if we have UID 0, exit otherwise
 rootcheck () {
   if [[ $EUID -gt 0 ]]; then
-    msg "ERROR: $progname: This operation needs super-user privileges. Exiting."
-    exit 255
+    msg "$progname: This operation needs super-user privileges."
+    SUDO=sudo
+  else
+    SUDO=''
   fi
 }
 
@@ -402,13 +404,13 @@ case "$cmd" in
     code=0
     for repo in "$@"; do
       msg "Adding repository: $repo"
-      xbps-install "$repo"
+      $SUDO xbps-install "$repo"
       ret=$?
       ((ret == 0)) || code=1
       rmsg "$ret" "[xbps-install $arg] return code: $ret"
 
       msg "Synchronizing remote repository data (xbps-install -S): "
-      xbps-install -S
+      $SUDO xbps-install -S
       ret=$?
       ((ret == 0)) || code=1
       rmsg "$ret" "[xbps-install -S] return code: $ret"
@@ -420,7 +422,7 @@ case "$cmd" in
   sync|sy)
     rootcheck
     msg -n 'Synchronizing remote repository data '
-    wrapcommand xbps-install -S
+    wrapcommand $SUDO xbps-install -S
   ;;
 
   install|i)
@@ -431,7 +433,7 @@ case "$cmd" in
     fi
 
     msg -n "Installing packages: $* "
-    wrapcommand xbps-install -S "$@"
+    wrapcommand $SUDO xbps-install -S "$@"
   ;;
 
   yesinstall)
@@ -441,7 +443,7 @@ case "$cmd" in
       exit 1
     fi
     msg -n "Installing packages (assumed yes): $* "
-    wrapcommand xbps-install -y -S "$@"
+    wrapcommand $SUDO xbps-install -y -S "$@"
   ;;
 
   devinstall)
@@ -459,13 +461,13 @@ case "$cmd" in
     msg "(Note: forceinstall won't install -devel packages)"
     for arg in "${args[@]}"; do
       msg "Installing package: $arg (xbps-install -S $arg) ..."
-      xbps-install -S "$arg"
+      $SUDO xbps-install -S "$arg"
       ret=$?
       ((ret == 0)) || code=1
       rmsg "$ret" "[xbps-install -S $arg] return code: $ret"
 
       msg "installing devel package (${arg}-devel):"
-      xbps-install -S "${arg}-devel"
+      $SUDO xbps-install -S "${arg}-devel"
       ret=$?
       ((ret == 0)) || code=1
       rmsg "$ret" "[xbps-install -S ${arg}-devel] return code: $ret"
@@ -477,40 +479,47 @@ case "$cmd" in
   forceinstall|fi)
     rootcheck
     msg -n "Force-Installing Package(s): $* "
-    wrapcommand xbps-install -Sf "$@"
+    wrapcommand $SUDO xbps-install -Sf "$@"
   ;;
 
   remove|rm)
     rootcheck
     msg -n "Removing package(s): $* "
-    wrapcommand xbps-remove -v "$@"
+    wrapcommand $SUDO xbps-remove -v "$@"
   ;;
 
   removerecursive|rr)
     rootcheck
     msg -n "Removing package(s) recursively: $* "
-    wrapcommand xbps-remove -v -R "$@"
+    wrapcommand $SUDO xbps-remove -v -R "$@"
   ;;
 
   reconfigure|rc)
     rootcheck
     msg -n 'reconfigure: Re-configuring package(s) '
-    wrapcommand xbps-reconfigure -v "$@"
+    wrapcommand $SUDO xbps-reconfigure -v "$@"
   ;;
 
   autoremove|ar)
     rootcheck
     msg -n 'autoremove: Removing orphaned packages '
-    wrapcommand xbps-remove -v -O
+    wrapcommand $SUDO xbps-remove -v -O
   ;;
 
   update|upgrade|up)
     rootcheck
     msg -n 'Running system update '
-    wrapcommand xbps-install -Suv
+    wrapcommand $SUDO xbps-install -Suv
+    if [[ $ret == 16 ]]; then
+     msg "Updating xbps (xbps-install -u xbps)"
+     $SUDO xbps-install -u xbps
+     msg -n 'Run system update again '
+     exit 0
+    fi
+    
   ;;
 
-  search|s|se)
+  search|s)
     msg -n "Searching for: $* "
     wrapcommand xbps-query -v -Rs "$@"
   ;;
@@ -518,7 +527,7 @@ case "$cmd" in
   cleanup|clean|cl)
     msg -n 'Cleaning up packages (will remove orphaned packages) '
     rootcheck
-    wrapcommand xbps-remove -v -O "$@"
+    wrapcommand $SUDO xbps-remove -v -O "$@"
   ;;
 
   h|help|-h|--help)
