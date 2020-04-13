@@ -512,6 +512,7 @@ case "$cmd" in
     wrapcommand $SUDO xbps-install -Suv
     if [[ $ret == 16 ]]; then
      $SUDO xbps-install -u xbps
+     wrapcommand $SUDO xbps-install -Suv
     fi
     
   ;;
