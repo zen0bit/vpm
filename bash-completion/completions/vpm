@@ -29,15 +29,15 @@ _vpm()
 	autoremove
 	help
 	helppager'
-    local all_pkgs='info|filelist|deps|reverse|search|install|devinstall'
-    local installed_pkgs='listalternatives|setalternative|reconfigure|forceinstall|remove|removerecursive'
+    local all_pkgs='info|in|filelist|fl|deps|reverse|rv|search|s|install|i|devinstall|di'
+    local installed_pkgs='listalternatives|la|setalternative|sa|reconfigure|rc|forceinstall|fi|remove|rm|removerecursive|rc'
 
     if [[ $prev == @($1) ]]; then
-      COMPREPLY=( $( compgen -W "$subcommands" -- "$cur") )
+        COMPREPLY=( $( compgen -W "$subcommands" -- "$cur") )
     elif [[ $prev == @($all_pkgs) ]]; then
-    	COMPREPLY=( $(compgen -W '$(_xbps_all_packages)' -- "$cur") )
+        COMPREPLY=( $(compgen -W '$(_xbps_all_packages)' -- "$cur") )
     elif [[ $prev == @($installed_pkgs) ]]; then
-    	COMPREPLY=( $(compgen -W '$(_xbps_installed_packages)' -- "$cur") )
+        COMPREPLY=( $(compgen -W '$(_xbps_installed_packages)' -- "$cur") )
     fi
 } &&
 complete -F _vpm vpm
