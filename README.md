@@ -41,7 +41,7 @@ GitHub repository (see "Installation" section, below).
 
 ### 2. Clone vpm repository
 
-    $ git clone git://github.com/bahamas10/vpm.git
+    $ git clone git://github.com/zen0bit/vpm.git
 
 ### 3. Place `vpm`
 
