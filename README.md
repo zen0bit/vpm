@@ -86,4 +86,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # Author
 
 - vpm was written by Armin Jenewein (GitHub: @netzverweigerer) <vpm@m2m.pm>
-- this fork is maintained by Dave Eddy (GitHub: @bahamas10) <dave@daveeddy.com>
+- forked by Dave Eddy (GitHub: @bahamas10) <dave@daveeddy.com>
+- this fork by zenobit (GitHub: @zen0bit) <1zenobit@gmail.com>
