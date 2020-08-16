@@ -10,12 +10,6 @@
 # Released under the terms of the GNU general public license, version 3+
 # see LICENSE file for license information.
 
-# set version number
-version="1.3"
-
-# disable verbosity, by default
-verbose=false
-
 # VPM color definitions
 numcolorok=2
 numcolorfail=1
@@ -27,7 +21,15 @@ numcolorpkgcount=8
 numcolordarkgray=11
 numcolorbrackets=6
 
+getversion () {
+  local fp=$(readlink -f "$0")
+  (cd "${fp%/*}" && \
+    git describe --all --debug --long --tags 2>/dev/null) || echo "UNKNOWN"
+}
+
+version=$(getversion)
 progname=${0##*/}
+verbose=false
 
 # enable or disable colors based on the argument given, i.e.:
 # setcolors on   # colors on
@@ -155,10 +157,8 @@ version () {
 # check if we have UID 0, exit otherwise
 rootcheck () {
   if [[ $EUID -gt 0 ]]; then
-    msg "$progname: This operation needs super-user privileges."
-    SUDO=sudo
-  else
-    SUDO=''
+    msg "ERROR: $progname: This operation needs super-user privileges. Exiting."
+    exit 255
   fi
 }
 
@@ -205,53 +205,53 @@ usage () {
   echo -n "$colorheader"
   echo "SUBCOMMANDS: "
   echo -n "$colorgray"
-  echo "sync (sy)                      - Synchronize remote repository data"
+  echo "sync                         - Synchronize remote repository data"
   t "xbps-install -S"
-  echo "update (up)                    - Update the system"
+  echo "update (up)                  - Update the system"
   t "xbps-install -Sduv"
-  echo "listrepos (lr)                 - List configured repositories"
-  echo "repolist (rl)                  - Alias for listrepos"
+  echo "listrepos (lr)               - List configured repositories"
+  echo "repolist (rl)                - Alias for listrepos"
   t "xbps-query -v -L"
-  echo "addrepo (ar) <ARGS>            - Add an additional repository"
+  echo "addrepo (ar) <ARGS>          - Add an additional repository"
   t "xbps-install <ARGS>"
-  echo "info (in) <pkg>                - Show information about <package>"
+  echo "info <pkg>                   - Show information about <package>"
   t "xbps-query-v -R"
-  echo "filelist (fl) <pkg>            - Show file-list of <package>"
+  echo "filelist (fl) <pkg>          - Show file-list of <package>"
   t "xbps-query -v -R -f"
-  echo "deps <pkg>                     - Show dependencies for <package>"
+  echo "deps <pkg>                   - Show dependencies for <package>"
   t "xbps-query -v -R -x"
-  echo "reverse (rv) <pkg>             - Show reverse dependendies of <package> (see man xbps-query)"
+  echo "reverse (rv) <pkg>           - Show reverse dependendies of <package> (see man xbps-query)"
   t "xbps-query -v -R -X"
-  echo "search (s) <name>              - Search for package by <name>"
+  echo "search (s) <name>            - Search for package by <name>"
   t "xbps-query -v -Rs"
-  echo "searchfile (sf) <file>         - Search for package containing <file> (local)"
+  echo "searchfile (sf) <file>       - Search for package containing <file> (local)"
   t "xbps-query -v -o \"*/$1\""
-  echo "list (ls)                      - List installed packages"
+  echo "list (ls)                    - List installed packages"
   t "xbps-query -v -l"
-  echo "install (i) <pkg(s)>           - Install <package(s)>"
+  echo "install (i) <pkg(s)>         - Install <package(s)>"
   t "xbps-install -S"
-  echo "devinstall (di) <pkg(s)>       - Install <package> (and corresponding <package>-devel package(s))"
+  echo "devinstall (di) <pkg(s)>     - Install <package> (and corresponding <package>-devel package(s))"
   t "xbps-install -S <package> <package>-devel"
-  echo "listalternatives (la)          - List alternative candidates"
+  echo "listalternatives (la)        - List alternative candidates"
   t "xbps-alternatives -l"
-  echo "setalternative (sa) <pkg(s)    - Set alternative for <package>"
+  echo "setalternative (sa) <pkg(s)  - Set alternative for <package>"
   t "xbps-alternatives -s"
-  echo "reconfigure (rc) <pkg>         - Re-configure installed <package>"
+  echo "reconfigure (rc) <pkg>       - Re-configure installed <package>"
   t "xbps-reconfigure -v"
-  echo "forceinstall (fi) <pkg(s)>     - Force installation of <package(s)>"
+  echo "forceinstall (fi) <pkg(s)>   - Force installation of <package(s)>"
   t "xbps-install -f"
-  echo "remove (rm) <package(s))       - Remove <package(s)> from the system"
+  echo "remove <package(s))          - Remove <package(s)> from the system"
   t "xbps-remove -v "
-  echo "removerecursive (rr) <pkg(s)>  - Recursively remove package(s) (and its dependencies)"
+  echo "removerecursive <pkg(s)>     - Recursively remove package(s) (and its dependencies)"
   t "xbps-remove -v -R"
-  echo "cleanup (cl)                   - Clean up cache directory"
+  echo "cleanup (cl)                 - Clean up cache directory"
   t "xbps-remove -v -O"
-  echo "autoremove (ar)                - Remove orphaned packages"
+  echo "autoremove (ar)              - Remove orphaned packages"
   t "xbps-remove -v -O"
-  echo "whatprovides (wp) <file>       - Search for package containing <file>"
+  echo "whatprovides (wp) <file>     - Search for package containing <file>"
   t "xlocate <pkg>"
-  echo "help                           - Show usage information"
-  echo "helppager (hp)                 - Show usage information (will pipe output to less/more)"
+  echo "help                         - Show usage information"
+  echo "helppager (hp)               - Show usage information (will pipe output to less/more)"
   echo
   echo -n "$colorheader"
   echo "XBPS COMPATIBILITY COOLNESS:"
@@ -402,13 +402,13 @@ case "$cmd" in
     code=0
     for repo in "$@"; do
       msg "Adding repository: $repo"
-      $SUDO xbps-install "$repo"
+      xbps-install "$repo"
       ret=$?
       ((ret == 0)) || code=1
       rmsg "$ret" "[xbps-install $arg] return code: $ret"
 
       msg "Synchronizing remote repository data (xbps-install -S): "
-      $SUDO xbps-install -S
+      xbps-install -S
       ret=$?
       ((ret == 0)) || code=1
       rmsg "$ret" "[xbps-install -S] return code: $ret"
@@ -420,7 +420,7 @@ case "$cmd" in
   sync|sy)
     rootcheck
     msg -n 'Synchronizing remote repository data '
-    wrapcommand $SUDO xbps-install -S
+    wrapcommand xbps-install -S
   ;;
 
   install|i)
@@ -431,7 +431,7 @@ case "$cmd" in
     fi
 
     msg -n "Installing packages: $* "
-    wrapcommand $SUDO xbps-install -S "$@"
+    wrapcommand xbps-install -S "$@"
   ;;
 
   yesinstall)
@@ -441,7 +441,7 @@ case "$cmd" in
       exit 1
     fi
     msg -n "Installing packages (assumed yes): $* "
-    wrapcommand $SUDO xbps-install -y -S "$@"
+    wrapcommand xbps-install -y -S "$@"
   ;;
 
   devinstall)
@@ -459,13 +459,13 @@ case "$cmd" in
     msg "(Note: forceinstall won't install -devel packages)"
     for arg in "${args[@]}"; do
       msg "Installing package: $arg (xbps-install -S $arg) ..."
-      $SUDO xbps-install -S "$arg"
+      xbps-install -S "$arg"
       ret=$?
       ((ret == 0)) || code=1
       rmsg "$ret" "[xbps-install -S $arg] return code: $ret"
 
       msg "installing devel package (${arg}-devel):"
-      $SUDO xbps-install -S "${arg}-devel"
+      xbps-install -S "${arg}-devel"
       ret=$?
       ((ret == 0)) || code=1
       rmsg "$ret" "[xbps-install -S ${arg}-devel] return code: $ret"
@@ -477,44 +477,40 @@ case "$cmd" in
   forceinstall|fi)
     rootcheck
     msg -n "Force-Installing Package(s): $* "
-    wrapcommand $SUDO xbps-install -Sf "$@"
+    wrapcommand xbps-install -Sf "$@"
   ;;
 
   remove|rm)
     rootcheck
     msg -n "Removing package(s): $* "
-    wrapcommand $SUDO xbps-remove -v "$@"
+    wrapcommand xbps-remove -v "$@"
   ;;
 
   removerecursive|rr)
     rootcheck
     msg -n "Removing package(s) recursively: $* "
-    wrapcommand $SUDO xbps-remove -v -R "$@"
+    wrapcommand xbps-remove -v -R "$@"
   ;;
 
   reconfigure|rc)
     rootcheck
     msg -n 'reconfigure: Re-configuring package(s) '
-    wrapcommand $SUDO xbps-reconfigure -v "$@"
+    wrapcommand xbps-reconfigure -v "$@"
   ;;
 
   autoremove|ar)
     rootcheck
     msg -n 'autoremove: Removing orphaned packages '
-    wrapcommand $SUDO xbps-remove -v -O
+    wrapcommand xbps-remove -v -O
   ;;
 
   update|upgrade|up)
     rootcheck
     msg -n 'Running system update '
-    wrapcommand $SUDO xbps-install -Suv
-    if [[ $ret == 16 ]]; then
-     $SUDO xbps-install -u xbps
-    fi
-    
+    wrapcommand xbps-install -Suv
   ;;
 
-  search|s)
+  search|s|se)
     msg -n "Searching for: $* "
     wrapcommand xbps-query -v -Rs "$@"
   ;;
@@ -522,7 +518,7 @@ case "$cmd" in
   cleanup|clean|cl)
     msg -n 'Cleaning up packages (will remove orphaned packages) '
     rootcheck
-    wrapcommand $SUDO xbps-remove -v -O "$@"
+    wrapcommand xbps-remove -v -O "$@"
   ;;
 
   h|help|-h|--help)
