@@ -161,8 +161,15 @@ version () {
 rootcheck () {
   if [[ $EUID -gt 0 ]]; then
     msg "$progname: This operation needs super-user privileges."
-    SUDO=sudo
-  else
+    SUDO=
+      if command -v sudo >/dev/null; then
+          SUDO=sudo
+      elif command -v doas >/dev/null && [ -f /etc/doas.conf ]; then
+          SUDO=doas
+      elif [ "$(whoami)" != root ]; then
+          SUDO='su root -c '\''"$@"'\'' -- -'
+      fi
+    else
     SUDO=''
   fi
 }
