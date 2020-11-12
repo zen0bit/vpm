@@ -148,8 +148,10 @@ version () {
 # check if we have UID 0, exit otherwise
 rootcheck () {
   if [[ $EUID -gt 0 ]]; then
-    msg "ERROR: $progname: This operation needs super-user privileges. Exiting."
-    exit 255
+    msg "$progname: This operation needs super-user privileges."
+    SUDO=sudo
+  else
+    SUDO=''
   fi
 }
 
@@ -378,7 +380,7 @@ case "$arg" in
   setalternative|setalternatives|sa)
     shift
     rootcheck
-    xbps-alternatives -s "$@"
+    $SUDO xbps-alternatives -s "$@"
     ret=$?
     rmsg "$ret" "xbps-alternatives return code: $ret (xbps-alternatives -s $@)"
   ;;
@@ -405,11 +407,11 @@ case "$arg" in
     rootcheck
     for repo in "$@"; do
       msg "Adding repository: $repo"
-      xbps-install "$1"
+      $SUDO xbps-install "$1"
       ret=$?
       rmsg "$ret" "[xbps-install $arg] return code: $ret"
       msg "Synchronizing remote repository data (xbps-install -S): "
-      xbps-install -S
+      $SUDO xbps-install -S
       ret=$?
       rmsg "$ret" "[xbps-install -S] return code: $ret"
       shift
@@ -420,7 +422,7 @@ case "$arg" in
     shift
     rootcheck
     msg "Synchronizing remote repository data: (xbps-install -S):"
-    xbps-install -S
+    $SUDO xbps-install -S
     ret=$?
     rmsg "$ret" "[xbps-install -S] return code: $ret"
   ;;
@@ -433,7 +435,7 @@ case "$arg" in
       exit 1
     fi
     msg "Installing packages: $@ (xbps-install -S $@) ..."
-    xbps-install -S "$@"
+    $SUDO xbps-install -S "$@"
     ret=$?
     rmsg "$ret" "[xbps-install -S $@] return code: $ret"
   ;;
@@ -446,7 +448,7 @@ case "$arg" in
       exit 1
     fi
     msg "Installing packages: $@ (xbps-install -S $@) ..."
-    xbps-install -y -S "$@"
+    $SUDO xbps-install -y -S "$@"
     ret=$?
     rmsg "$ret" "[xbps-install -S $@] return code: $ret"
   ;;
@@ -465,11 +467,11 @@ case "$arg" in
     for arg in "${args[@]}"; do
       let count=count+1
       msg "Installing package: $arg (xbps-install -S $arg) ..."
-      xbps-install -S "$arg"
+      $SUDO xbps-install -S "$arg"
       ret=$?
       rmsg "$ret" "[xbps-install -S $arg] return code: $ret"
       msg "installing devel package (${arg}-devel):"
-      xbps-install -S "${arg}-devel"
+      $SUDO xbps-install -S "${arg}-devel"
       ret=$?
       rmsg "$ret" "[xbps-install -S ${arg}-devel] return code: $ret"
     done
@@ -479,7 +481,7 @@ case "$arg" in
     shift
     rootcheck
     msg "Force-Installing Package(s): $@ (xbps-install -Sf $@)"
-    xbps-install -Sf "$@"
+    $SUDO xbps-install -Sf "$@"
     ret=$?
     rmsg "$ret" "[xbps-install -Sf ${@}] return code: $ret"
   ;;
@@ -488,7 +490,7 @@ case "$arg" in
     shift
     rootcheck
     msg "Removing package(s): $@ (xbps-remove -v $@)"
-    xbps-remove -v "$@"
+    $SUDO xbps-remove -v "$@"
     ret=$?
     rmsg "$ret" "[xbps-remove -v ${@}] return code: $ret"
   ;;
@@ -497,7 +499,7 @@ case "$arg" in
     shift
     rootcheck
     msg "Removing package(s) recursively: $@ (xbps-remove -v -R $@)"
-    xbps-remove -v -R "$@"
+    $SUDO xbps-remove -v -R "$@"
     ret=$?
     rmsg "$ret" "[xbps-remove -v -R ${@}] return code: $ret"
   ;;
@@ -506,7 +508,7 @@ case "$arg" in
     shift
     rootcheck
     msg "reconfigure: Re-configuring package(s) (xbps-reconfigure -v $@):"
-    xbps-reconfigure -v "$@"
+    $SUDO xbps-reconfigure -v "$@"
     ret=$?
     rmsg "$ret" "[xbps-reconfigure -v ${@}] return code: $ret"
   ;;
@@ -515,7 +517,7 @@ case "$arg" in
     shift
     rootcheck
     msg "autoremove: Removing orphaned packages (xbps-remove -v -o)"
-    xbps-remove -v -o
+    $SUDO xbps-remove -v -o
     ret=$?
     rmsg "$ret" "[xbps-remove -v -o] return code: $ret"
   ;;
@@ -524,7 +526,7 @@ case "$arg" in
     shift
     rootcheck
     msg "Running system update (xbps-install -Suv)"
-    xbps-install -Suv
+    $SUDO xbps-install -Suv
     ret=$?
     if [[ $ret == 16 ]]; then
       msg "Updating xbps (xbps-install -u xbps)"
@@ -548,7 +550,7 @@ case "$arg" in
     msg "Cleaning up packages (will remove orphaned packages) (xbps-remove -v -O $@)"
     shift
     rootcheck
-    xbps-remove -v -O "$@"
+    $SUDO xbps-remove -v -O "$@"
     ret=$?
     rmsg "$ret" "[xbps-remove -v -O $@] return code: $ret"
   ;;
