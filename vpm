@@ -512,10 +512,15 @@ case "$cmd" in
   update|upgrade|up)
     rootcheck
     msg -n 'Running system update '
-    wrapcommand $SUDO xbps-install -Suv
-    if [[ $ret == 16 ]]; then
-     $SUDO xbps-install -u xbps
-     msg -n 'Run system update again!'
+    output=$($SUDO xbps-install -Suv)
+    ret=$?
+    if [[ $ret -eq 16 ]]; then
+     echo -n "$(tput setaf 1)You must update xbps first! Do it now?$(tput sgr 0)"
+     wrapcommand $SUDO xbps-install -u xbps
+     wrapcommand $SUDO xbps-install -Suv
+     msg -n 'System updated'
+     else
+      msg -n 'System is up todate '
     fi
     
   ;;
