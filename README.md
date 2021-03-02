@@ -60,7 +60,7 @@ Installing vpm should be as easy as following the simple following steps:
         
 If you want to remove vpm, just use make to remove it. Make sure you are in the cloned directory first, then run:
 
-        $ make uninstall
+    $ make uninstall
 
 # Author
 vpm was written by Armin Jenewein (GitHub: @netzverweigerer) <vpm@m2m.pm>
