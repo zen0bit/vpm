@@ -514,11 +514,11 @@ case "$cmd" in
     msg -n 'Running system update '
     $SUDO xbps-install -Suv
     if [[ $? == 16 ]]; then
-      msg -n "$(tput setaf 1)You must update xbps first! Do it now?$(tput sgr 0)"
+      msg -n "$(tput setaf 1)Updating xbps $(tput sgr 0)"
       $SUDO xbps-install -u xbps
       wrapcommand $SUDO xbps-install -Suv
     else
-      msg -n 'System updated.'
+      msg -n 'Your system is up to date.'
     fi
   ;;
 
