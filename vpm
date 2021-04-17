@@ -160,7 +160,7 @@ version () {
 # check if we have UID 0, exit otherwise
 rootcheck () {
   if [[ $EUID -gt 0 ]]; then
-    msg "$progname: This operation needs super-user privileges."
+    msg "$(tput setaf 1)This operation needs super-user privileges.$(tput sgr 0)"
     SUDO=sudo
   else
     SUDO=''
@@ -512,12 +512,14 @@ case "$cmd" in
   update|upgrade|up)
     rootcheck
     msg -n 'Running system update '
-    wrapcommand $SUDO xbps-install -Suv
-    if [[ $ret == 16 ]]; then
-     $SUDO xbps-install -u xbps
-     msg -n 'Run system update again!'
+    $SUDO xbps-install -Suv
+    if [[ $? == 16 ]]; then
+      msg -n "$(tput setaf 1)Updating xbps $(tput sgr 0)"
+      $SUDO xbps-install -u xbps
+      wrapcommand $SUDO xbps-install -Suv
+    else
+      msg -n 'Your system is up to date.'
     fi
-    
   ;;
 
   search|s)

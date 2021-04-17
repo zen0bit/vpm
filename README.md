@@ -43,15 +43,19 @@ GitHub repository (see "Installation" section, below).
 
     $ git clone git://github.com/zen0bit/vpm.git
 
-### 3. Place `vpm`
+### 3. Enter the cloned repo and install vpm
 
-Now put `vpm` in that newly-cloned repository somewhere where it can be
-executed.  Personally, I do this (inside the git repo)
+        $ cd vpm
+        $ make install
+        
+### 3a. Remove vpm
 
-    mkdir -p ~/bin
-    ln -s "$PWD/vpm" ~/bin/vpm
+If you want to remove vpm, just use make to remove it. Make sure you are in the cloned directory first, then run:
 
-And I have `~/bin` as part of my `$PATH`.
+    $ make uninstall
+
+# Author
+vpm was written by Armin Jenewein (GitHub: @netzverweigerer) <vpm@m2m.pm>
 
 # ZOMG! PONIES!!111
 
