@@ -10,13 +10,13 @@ That's it.
 
 # Screenshots
 
-Screenshot of a (not so) recent (anymore) vpm release:
+Screenshot of recent vpm release:
 
-![alt tag](https://raw.githubusercontent.com/netzverweigerer/vpm/master/screenshots/vpm.png)
+![alt tag](https://raw.githubusercontent.com/zen0bit/vpm/master/screenshots/vpm.png)
 
-Screenshot of vpm in full effect:
+Screenshot of vpm installing:
 
-![alt tag](https://raw.githubusercontent.com/netzverweigerer/vpm/master/screenshots/vpm2.png)
+![alt tag](https://raw.githubusercontent.com/zen0bit/vpm/master/screenshots/vpm2.png)
 
 # Motivation to write vpm
 
@@ -91,4 +91,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 - vpm was written by Armin Jenewein (GitHub: @netzverweigerer) <vpm@m2m.pm>
 - forked by Dave Eddy (GitHub: @bahamas10) <dave@daveeddy.com>
-- this fork by zenobit (GitHub: @zen0bit) <1zenobit@gmail.com>
+- this fork by zenobit (GitHub: @zen0bit) <kvvark@gmail.com>
