@@ -5,7 +5,7 @@
 # XBPS, the X Binary Package System
 # Copyright (c) 2016 Armin Jenewein <a@m2m.pm>, GitHub: @netzverweigerer
 # Copyright (c) 2019 Dave Eddy <dave@daveeddy.com>, GitHub: @bahamas10
-# Copyright (c) 2021 zenobit, <kvvark@gmail.com>, GitHub: @zen0bit
+# Copyright (c) 2021 zenobit, <1zenobit@gmail.com>, GitHub: @zen0bit
 # For more information about XBPS, see:
 # https://github.com/voidlinux/xbps
 
@@ -153,7 +153,7 @@ version () {
   msg "$progname - Version: $version"
   msg "Copyright (c) 2016 Armin Jenewein <a@m2m.pm> (GPLv3+)"
   msg "Copyright (c) 2018 Dave Eddy <dave@daveeddy.com> (GPLv3+)"
-  msg "Copyright (c) 2021 zenobit <kvvark@gmail.com> (GPLv3+)"
+  msg "Copyright (c) 2021 zenobit <1zenobit@gmail.com> (GPLv3+)"
   msg "XBPS version: $(xbps-query -v --version | sed 's/GIT: UNSET//')"
 }
 
