@@ -217,7 +217,7 @@ usage () {
   echo "listrepos (lr)                 - List configured repositories"
   echo "repolist (rl)                  - Alias for listrepos"
   t "xbps-query -v -L"
-  echo "addrepo (ar) <ARGS>            - Add an additional repository"
+  echo "addrepo (ad) <ARGS>            - Add an additional repository"
   t "xbps-install <ARGS>"
   echo "info (in) <pkg>                - Show information about <package>"
   t "xbps-query-v -R"
@@ -401,9 +401,12 @@ case "$cmd" in
     exit "$code"
   ;;
 
-  addrepo)
+  addrepo|ad)
     rootcheck
-
+    if (($# < 1)); then
+      rmsg 255 "ERROR: install: argument missing, try --help."
+      exit 1
+    fi
     code=0
     for repo in "$@"; do
       msg "Adding repository: $repo"
