@@ -141,7 +141,7 @@ banner () {
   echo -n "$colorlogo"
   echo -n '  \_/| .__/_|_|_|'
   echo -n "$colorgray"
-  echo '  GitHub: https://github.com/zen0bit/vpm'
+  echo '  GitHub: https://github.com/oSoWoSo/vpm'
   echo -n "$colorlogo"
   echo '     |/          '
   echo '     ´          '
