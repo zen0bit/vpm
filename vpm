@@ -249,10 +249,10 @@ usage () {
   t "xbps-remove -v "
   echo "removerecursive (rr) <pkg(s)>  - Recursively remove package(s) (and its dependencies)"
   t "xbps-remove -v -R"
-  echo "cleanup (cl)                   - Clean up cache directory"
+  echo "cleanup (cl)                   - Remove obsolete packages in cachedir"
   t "xbps-remove -v -O"
-  echo "autoremove (ar)                - Remove orphaned packages"
-  t "xbps-remove -v -O"
+  echo "autoremove (ar)                - Remove package orphans"
+  t "xbps-remove -v -o"
   echo "whatprovides (wp) <file>       - Search for package containing <file>"
   t "xlocate <pkg>"
   echo "help                           - Show usage information"
@@ -506,7 +506,7 @@ case "$cmd" in
   autoremove|ar)
     rootcheck
     msg -n 'autoremove: Removing orphaned packages '
-    wrapcommand $SUDO xbps-remove -v -O
+    wrapcommand $SUDO xbps-remove -v -o
   ;;
 
   update|upgrade|up)
@@ -528,7 +528,7 @@ case "$cmd" in
   ;;
 
   cleanup|clean|cl)
-    msg -n 'Cleaning up packages (will remove orphaned packages) '
+    msg -n 'Remove obsolete packages in cachedir '
     rootcheck
     wrapcommand $SUDO xbps-remove -v -O "$@"
   ;;
