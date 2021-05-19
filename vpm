@@ -234,9 +234,9 @@ usage () {
   echo "list (ls)                      - List installed packages"
   t "xbps-query -v -l"
   echo "install (i) <pkg(s)>           - Install <package(s)>"
-  t "xbps-install -S"
+  t "xbps-install"
   echo "devinstall (di) <pkg(s)>       - Install <package> (and corresponding <package>-devel package(s))"
-  t "xbps-install -S <package> <package>-devel"
+  t "xbps-install <package> <package>-devel"
   echo "listalternatives (la)          - List alternative candidates"
   t "xbps-alternatives -l"
   echo "setalternative (sa) <pkg(s)    - Set alternative for <package>"
@@ -439,7 +439,7 @@ case "$cmd" in
     fi
 
     msg -n "Installing packages: $* "
-    wrapcommand $SUDO xbps-install -S "$@"
+    wrapcommand $SUDO xbps-install "$@"
   ;;
 
   yesinstall)
@@ -449,7 +449,7 @@ case "$cmd" in
       exit 1
     fi
     msg -n "Installing packages (assumed yes): $* "
-    wrapcommand $SUDO xbps-install -y -S "$@"
+    wrapcommand $SUDO xbps-install -y "$@"
   ;;
 
   devinstall)
@@ -466,17 +466,17 @@ case "$cmd" in
     msg "Use \"forceinstall\" to override this if you know what you're doing."
     msg "(Note: forceinstall won't install -devel packages)"
     for arg in "${args[@]}"; do
-      msg "Installing package: $arg (xbps-install -S $arg) ..."
-      $SUDO xbps-install -S "$arg"
+      msg "Installing package: $arg (xbps-install $arg) ..."
+      $SUDO xbps-install "$arg"
       ret=$?
       ((ret == 0)) || code=1
-      rmsg "$ret" "[xbps-install -S $arg] return code: $ret"
+      rmsg "$ret" "[xbps-install $arg] return code: $ret"
 
       msg "installing devel package (${arg}-devel):"
-      $SUDO xbps-install -S "${arg}-devel"
+      $SUDO xbps-install "${arg}-devel"
       ret=$?
       ((ret == 0)) || code=1
-      rmsg "$ret" "[xbps-install -S ${arg}-devel] return code: $ret"
+      rmsg "$ret" "[xbps-install ${arg}-devel] return code: $ret"
     done
 
     exit "$code"
@@ -485,7 +485,7 @@ case "$cmd" in
   forceinstall|fi)
     rootcheck
     msg -n "Force-Installing Package(s): $* "
-    wrapcommand $SUDO xbps-install -Sf "$@"
+    wrapcommand $SUDO xbps-install -f "$@"
   ;;
 
   remove|rm)
