@@ -73,6 +73,8 @@ remember syntax, no --long-option-with-multiple-complex-words, no need to even
 prefix arguments with --, vpm just tries to do its best it can to understand the
 user (there are some command-line-switches, though, see vpm help).
 
+Also vpm will ask for password if needed.
+
 # License
 
 vpm is released under the terms of the GNU General Public License,
