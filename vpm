@@ -16,7 +16,7 @@
 version="1.4"
 
 # disable verbosity, by default
-verbose=true
+verbose=false
 
 # VPM color definitions
 numcolorok=2
@@ -250,7 +250,7 @@ usage () {
   t "xbps-remove -v -R"
   echo "cleanup (cl)                   - Remove obsolete packages in cachedir"
   t "xbps-remove -v -O"
-  echo "autoremove (ar)                - Remove package orphans"
+  echo "autoremove (ar)                - Remove orphaned packages"
   t "xbps-remove -v -o"
   echo "whatprovides (wp) <file>       - Search for package containing <file>"
   t "xlocate <pkg>"
