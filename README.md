@@ -18,7 +18,7 @@ Screenshot of vpm installing:
 
 ![install](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpmINSTALL.png)
 
-Screenshot of vpm updating xbps:
+Screenshot of vpm automatic updating xbps while updating system:
 
 ![xbps](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpmXBPS.png)
 
