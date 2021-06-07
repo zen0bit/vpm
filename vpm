@@ -15,7 +15,7 @@
 # set version number
 version="1.4"
 
-# enable verbosity, by default
+# disable verbosity, by default
 verbose=false
 
 # VPM color definitions
