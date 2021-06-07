@@ -16,7 +16,7 @@ Screenshot of recent vpm release:
 
 Screenshot of vpm installing:
 
-![alt tag](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpm2.png)
+![alt tag](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpmInstall.png)
 
 # Motivation to write vpm
 
