@@ -10,17 +10,21 @@ That's it.
 
 # Screenshots
 
-Screenshot of recent vpm release:
+vpm...
 
-![vpm](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpm.png)
+![vpm](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpm1.png)
 
-Screenshot of vpm installing:
+vpm trying install package but...
 
-![install](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpmINSTALL.png)
+![try](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpm2.png)
 
-Screenshot of vpm automatic updating xbps while updating system:
+vpm automatic updating xbps while updating system...
 
-![xbps](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpmXBPS.png)
+![xbps](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpm3.png)
+
+vpm installing package...
+
+![xbps](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpm4.png)
 
 # Motivation to write vpm
 
