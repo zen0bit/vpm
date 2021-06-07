@@ -16,7 +16,7 @@
 version="1.4"
 
 # enable verbosity, by default
-verbose=true
+verbose=false
 
 # VPM color definitions
 numcolorok=2
