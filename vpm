@@ -5,7 +5,7 @@
 # XBPS, the X Binary Package System
 # Copyright (c) 2016 Armin Jenewein <a@m2m.pm>, GitHub: @netzverweigerer
 # Copyright (c) 2019 Dave Eddy <dave@daveeddy.com>, GitHub: @bahamas10
-# Copyright (c) 2021 zenobit, <1zenobit@gmail.com>, GitHub: @zen0bit
+# Copyright (c) 2021 zenobit, <b0yc8wrv7@relay.firefox.com>, GitHub: @zen0bit Gitlab: @zenobit
 # For more information about XBPS, see:
 # https://github.com/voidlinux/xbps
 
@@ -153,7 +153,7 @@ version () {
   msg "$progname - Version: $version"
   msg "Copyright (c) 2016 Armin Jenewein <a@m2m.pm> (GPLv3+)"
   msg "Copyright (c) 2018 Dave Eddy <dave@daveeddy.com> (GPLv3+)"
-  msg "Copyright (c) 2021 zenobit <1zenobit@gmail.com> (GPLv3+)"
+  msg "Copyright (c) 2021 zenobit <b0yc8wrv7@relay.firefox.com> (GPLv3+)"
   msg "XBPS version: $(xbps-query -v --version | sed 's/GIT: UNSET//')"
 }
 
@@ -234,9 +234,9 @@ usage () {
   echo "list (ls)                      - List installed packages"
   t "xbps-query -v -l"
   echo "install (i) <pkg(s)>           - Install <package(s)>"
-  t "xbps-install"
+  t "xbps-install -S"
   echo "devinstall (di) <pkg(s)>       - Install <package> (and corresponding <package>-devel package(s))"
-  t "xbps-install <package> <package>-devel"
+  t "xbps-install -S <package> <package>-devel"
   echo "listalternatives (la)          - List alternative candidates"
   t "xbps-alternatives -l"
   echo "setalternative (sa) <pkg(s)    - Set alternative for <package>"
@@ -374,6 +374,7 @@ case "$cmd" in
   setalternative|setalternatives|sa)
     rootcheck
     wrapcommand xbps-alternatives -s "$@"
+    echo
   ;;
 
   repolist|listrepos|rl|lr)
@@ -403,6 +404,7 @@ case "$cmd" in
 
   addrepo|ad)
     rootcheck
+    echo
     if (($# < 1)); then
       rmsg 255 "ERROR: install: argument missing, try --help."
       exit 1
@@ -428,6 +430,7 @@ case "$cmd" in
   sync|sy)
     rootcheck
     msg -n 'Synchronizing remote repository data '
+    echo
     wrapcommand $SUDO xbps-install -S
   ;;
 
@@ -439,6 +442,7 @@ case "$cmd" in
     fi
 
     msg -n "Installing packages: $* "
+    echo
     wrapcommand $SUDO xbps-install "$@"
   ;;
 
@@ -449,7 +453,8 @@ case "$cmd" in
       exit 1
     fi
     msg -n "Installing packages (assumed yes): $* "
-    wrapcommand $SUDO xbps-install -y "$@"
+    echo
+    wrapcommand $SUDO xbps-install -y -S "$@"
   ;;
 
   devinstall)
@@ -466,17 +471,17 @@ case "$cmd" in
     msg "Use \"forceinstall\" to override this if you know what you're doing."
     msg "(Note: forceinstall won't install -devel packages)"
     for arg in "${args[@]}"; do
-      msg "Installing package: $arg (xbps-install $arg) ..."
-      $SUDO xbps-install "$arg"
+      msg "Installing package: $arg (xbps-install -S $arg) ..."
+      $SUDO xbps-install -S "$arg"
       ret=$?
       ((ret == 0)) || code=1
-      rmsg "$ret" "[xbps-install $arg] return code: $ret"
+      rmsg "$ret" "[xbps-install -S $arg] return code: $ret"
 
       msg "installing devel package (${arg}-devel):"
-      $SUDO xbps-install "${arg}-devel"
+      $SUDO xbps-install -S "${arg}-devel"
       ret=$?
       ((ret == 0)) || code=1
-      rmsg "$ret" "[xbps-install ${arg}-devel] return code: $ret"
+      rmsg "$ret" "[xbps-install -S ${arg}-devel] return code: $ret"
     done
 
     exit "$code"
@@ -485,43 +490,53 @@ case "$cmd" in
   forceinstall|fi)
     rootcheck
     msg -n "Force-Installing Package(s): $* "
-    wrapcommand $SUDO xbps-install -f "$@"
+    echo
+    wrapcommand $SUDO xbps-install -Sf "$@"
   ;;
 
   remove|rm)
     rootcheck
     msg -n "Removing package(s): $* "
+    echo
     wrapcommand $SUDO xbps-remove -v "$@"
   ;;
 
   removerecursive|rr)
     rootcheck
     msg -n "Removing package(s) recursively: $* "
+    echo
     wrapcommand $SUDO xbps-remove -v -R "$@"
   ;;
 
   reconfigure|rc)
     rootcheck
     msg -n 'reconfigure: Re-configuring package(s) '
+    echo
     wrapcommand $SUDO xbps-reconfigure -v "$@"
   ;;
 
   autoremove|ar)
     rootcheck
     msg -n 'autoremove: Removing orphaned packages '
+    echo
     wrapcommand $SUDO xbps-remove -v -o
   ;;
 
   update|upgrade|up)
     rootcheck
     msg -n 'Running system update '
+    echo
     $SUDO xbps-install -Suv
     if [[ $? == 16 ]]; then
       msg -n "$(tput setaf 1)Updating xbps $(tput sgr 0)"
       $SUDO xbps-install -u xbps
       wrapcommand $SUDO xbps-install -Suv
     else
-      msg -n 'Your system is up to date.'
+      if [[ $? == 1 ]]; then
+        msg -n 'Your system is up to date.'
+      else
+        msg -n $? 'Something goes wrong!'
+      fi
     fi
   ;;
 
@@ -533,6 +548,7 @@ case "$cmd" in
   cleanup|clean|cl)
     msg -n 'Remove obsolete packages in cachedir '
     rootcheck
+    echo
     wrapcommand $SUDO xbps-remove -v -O "$@"
   ;;
 
