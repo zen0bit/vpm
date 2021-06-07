@@ -151,6 +151,7 @@ banner () {
 version () {
   banner
   msg "$progname - Version: $version"
+  msg "Copyright (c) 2016 Armin Jenewein <a@m2m.pm> (GPLv3+)"
   msg "Copyright (c) 2021 zenobit <b0yc8wrv7@relay.firefox.com> (GPLv3+)"
   msg "XBPS version: $(xbps-query -v --version | sed 's/GIT: UNSET//')"
 }
