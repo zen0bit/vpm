@@ -12,11 +12,15 @@ That's it.
 
 Screenshot of recent vpm release:
 
-![alt tag](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpm.png)
+![vpm](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpm.png)
 
 Screenshot of vpm installing:
 
-![alt tag](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpmInstall.png)
+![install](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpmINSTALL.png)
+
+Screenshot of vpm updating xbps:
+
+![xbps](https://raw.githubusercontent.com/oSoWoSo/vpm/master/screenshots/vpmXBPS.png)
 
 # Motivation to write vpm
 
